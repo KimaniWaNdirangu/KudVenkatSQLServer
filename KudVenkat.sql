@@ -122,3 +122,6 @@ FROM tblPerson
 
 DELETE FROM tblGender
 WHERE ID = 1 -- 2 and 3
+
+-- Part 6 - Check Constraint
+------------------------------------------------------------
