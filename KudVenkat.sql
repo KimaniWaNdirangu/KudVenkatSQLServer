@@ -103,5 +103,22 @@ VALUES (9, 'Sara', 's@r.com', 2)
 INSERT INTO tblPerson (ID, Name, Email, GenderID)
 VALUES (10, 'Johnny', 'j@r.com', NULL)
 
+-- Dropping a Default Constraint
 ALTER TABLE tblPerson
 DROP CONSTRAINT DF_tblPerson_GenderID
+
+-- Part 5 - Cascading referential integrity constraint
+------------------------------------------------------------
+-- Options
+-- 1. No Action
+-- 2. Cascade
+-- 3. Set NULL
+-- 4. Set Default
+
+SELECT *
+FROM tblGender
+SELECT *
+FROM tblPerson
+
+DELETE FROM tblGender
+WHERE ID = 1 -- 2 and 3
