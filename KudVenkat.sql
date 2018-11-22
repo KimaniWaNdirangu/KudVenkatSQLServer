@@ -125,3 +125,24 @@ WHERE ID = 1 -- 2 and 3
 
 -- Part 6 - Check Constraint
 ------------------------------------------------------------
+SELECT *
+FROM tblPerson
+
+INSERT INTO tblPerson
+VALUES
+	(6, 'Sara', 's@s.com', 2, 10)
+
+INSERT INTO tblPerson
+VALUES
+	(11, 'Sara', 's@s.com', 2, NULL)
+
+DELETE FROM tblPerson
+WHERE ID = 6
+
+-- Dropping a Check Constraint
+ALTER TABLE tblPerson
+DROP CONSTRAINT CK_tblPerson_Age
+
+-- Adding a Check Constraint
+ALTER TABLE tblPerson
+ADD CONSTRAINT CK_tblPerson_Age CHECK (Age > 0 AND Age < 150)
