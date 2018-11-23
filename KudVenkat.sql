@@ -198,3 +198,56 @@ DBCC CHECKIDENT([dbo.tblPerson1], RESEED, 0)
 
 INSERT INTO dbo.tblPerson1
 VALUES ('Martin')
+
+-- -----------------------------------------------------------------------------
+/* Part 8 - Last Generated Identity Column Value
+ * SCOPE_IDENTITY()
+ * @@IDENTITY
+ * IDENT CURRENT('TableName')
+*/
+
+-- User 1 Session
+CREATE TABLE Test1
+(
+	ID INT IDENTITY(1, 1),
+	Value NVARCHAR(20)
+)
+
+CREATE TABLE Test2
+(
+	ID INT IDENTITY(1, 1),
+	Value NVARCHAR(20)
+)
+
+INSERT INTO Test1
+VALUES ('X')
+
+SELECT *
+FROM Test1
+SELECT *
+FROM Test2
+
+SELECT SCOPE_IDENTITY()
+-- Same Session and SAME Scope - Used in Real World
+SELECT @@IDENTITY
+-- Same Session across ANY Scope
+SELECT IDENT_CURRENT('Test2')
+-- Specific Table across ANY Session and ANY Scop
+
+CREATE TRIGGER trForInsert ON Test1 FOR INSERT
+AS
+BEGIN
+	INSERT INTO Test2
+	VALUES('YYYY')
+END
+
+
+INSERT INTO Test2
+VALUES ('ZZZ')
+
+-- User 2 Session
+INSERT INTO Test2
+VALUES
+	('ZZZ')
+
+--------------------------------------------------------------------------------
