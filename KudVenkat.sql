@@ -129,12 +129,10 @@ SELECT *
 FROM tblPerson
 
 INSERT INTO tblPerson
-VALUES
-	(6, 'Sara', 's@s.com', 2, 10)
+VALUES (6, 'Sara', 's@s.com', 2, 10)
 
 INSERT INTO tblPerson
-VALUES
-	(11, 'Sara', 's@s.com', 2, NULL)
+VALUES (11, 'Sara', 's@s.com', 2, NULL)
 
 DELETE FROM tblPerson
 WHERE ID = 6
@@ -153,24 +151,19 @@ SElECT *
 FROM dbo.tblPerson1
 
 INSERT INTO dbo.tblPerson1
-VALUES
-	('John')
+VALUES ('John')
 INSERT INTO dbo.tblPerson1
-VALUES
-	('Tom')
+VALUES ('Tom')
 INSERT INTO dbo.tblPerson1
-VALUES
-	('Sara')
+VALUES ('Sara')
 
 DELETE FROM tblPerson1 WHERE PersonId = 1
 
 INSERT INTO dbo.tblPerson1
-VALUES
-	('Tod')
+VALUES ('Tod')
 
 INSERT INTO dbo.tblPerson1
-VALUES
-	(1, 'Jane')
+VALUES (1, 'Jane')
 
 /*
 Msg 8101, Level 16, State 1, Line 16
@@ -179,14 +172,11 @@ An explicit value for the identity column in table 'dbo.tblPerson1' can only be 
 
 SET IDENTITY_INSERT tblPerson1 ON
 
-INSERT INTO dbo.tblPerson1
-	(PersonId, Name)
-VALUES
-	(1, 'Jane')
+INSERT INTO dbo.tblPerson1 (PersonId, Name)
+VALUES (1, 'Jane')
 
 INSERT INTO dbo.tblPerson1
-VALUES
-	('Martin')
+VALUES ('Martin')
 
 /*
 Msg 545, Level 16, State 1, Line 29
@@ -196,18 +186,15 @@ Explicit value must be specified for identity column in table 'tblPerson1' eithe
 SET IDENTITY_INSERT tblPerson1 OFF
 
 INSERT INTO dbo.tblPerson1
-VALUES
-	('Martin')
+VALUES ('Martin')
 
 DELETE FROM dbo.tblPerson1
 
-SElECT *
-FROM dbo.tblPerson1
-
-INSERT INTO dbo.tblPerson1
-VALUES
-	('Martin')
+SElECT * FROM dbo.tblPerson1
 
 --  USe DDBC to reset the Identity Value
 
 DBCC CHECKIDENT([dbo.tblPerson1], RESEED, 0)
+
+INSERT INTO dbo.tblPerson1
+VALUES ('Martin')
