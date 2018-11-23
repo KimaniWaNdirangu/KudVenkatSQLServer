@@ -1,5 +1,5 @@
 -- Part 2
------------------------
+--------------------------------------------------------------------------------
 -- CREATE DATABASE
 CREATE DATABASE Sample
 
@@ -16,7 +16,7 @@ sp_renameDB 'Sample3', 'Sample4'
 DROP DATABASE master -- Error Message - Cannot drop database 'master' because it is a system database.
 
 -- Part 3 - Creating and Working With Tables
---------------------------------------------
+--------------------------------------------------------------------------------
 USE [Sample]
 GO
 
@@ -38,7 +38,7 @@ ADD CONSTRAINT tblPerson_GenderID_FK
 FOREIGN KEY(GenderID) REFERENCES tblGender(ID)
 
 -- Practice
-----------------------------------------------
+--------------------------------------------------------------------------------
 CREATE DATABASE CreditCollect
 
 USE CreditCollect
@@ -58,7 +58,7 @@ ADD CONSTRAINT FK_Defaulter_GenderID
 FOREIGN KEY (GenderID) REFERENCES Gender(ID); 
 
 -- End Practice
----------------------------------------------
+--------------------------------------------------------------------------------
 
 -- Part 4 - DEFAULT CONSTRAINT
 
@@ -73,7 +73,7 @@ VALUES (2, 'Female')
 
 INSERT INTO tblGender (ID, Gender)
 VALUES (3, 'Unknown')
--- -----------------------------------------------
+-- -----------------------------------------------------------------------------
 
 INSERT INTO tblPerson (ID, Name, Email, GenderID)
 VALUES (3, 'Simon', 's@s.com', 1)
@@ -108,7 +108,7 @@ ALTER TABLE tblPerson
 DROP CONSTRAINT DF_tblPerson_GenderID
 
 -- Part 5 - Cascading referential integrity constraint
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Options
 -- 1. No Action
 -- 2. Cascade
@@ -124,7 +124,7 @@ DELETE FROM tblGender
 WHERE ID = 1 -- 2 and 3
 
 -- Part 6 - Check Constraint
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 SELECT *
 FROM tblPerson
 
@@ -146,3 +146,68 @@ DROP CONSTRAINT CK_tblPerson_Age
 -- Adding a Check Constraint
 ALTER TABLE tblPerson
 ADD CONSTRAINT CK_tblPerson_Age CHECK (Age > 0 AND Age < 150)
+
+-- Part 7 - Identity Column (Auto-Increment)
+--------------------------------------------------------------------------------
+SElECT *
+FROM dbo.tblPerson1
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	('John')
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Tom')
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Sara')
+
+DELETE FROM tblPerson1 WHERE PersonId = 1
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Tod')
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	(1, 'Jane')
+
+/*
+Msg 8101, Level 16, State 1, Line 16
+An explicit value for the identity column in table 'dbo.tblPerson1' can only be specified when a column list is used and IDENTITY_INSERT is ON.
+*/
+
+SET IDENTITY_INSERT tblPerson1 ON
+
+INSERT INTO dbo.tblPerson1
+	(PersonId, Name)
+VALUES
+	(1, 'Jane')
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Martin')
+
+/*
+Msg 545, Level 16, State 1, Line 29
+Explicit value must be specified for identity column in table 'tblPerson1' either when IDENTITY_INSERT is set to ON or when a replication user is inserting into a NOT FOR REPLICATION identity column.
+*/
+
+SET IDENTITY_INSERT tblPerson1 OFF
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Martin')
+
+DELETE FROM dbo.tblPerson1
+
+SElECT *
+FROM dbo.tblPerson1
+
+INSERT INTO dbo.tblPerson1
+VALUES
+	('Martin')
+
+--  USe DDBC to reset the Identity Value
+
+DBCC CHECKIDENT([dbo.tblPerson1], RESEED, 0)
