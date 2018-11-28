@@ -19,6 +19,23 @@ DROP DATABASE master -- Error Message - Cannot drop database 'master' because it
 --------------------------------------------------------------------------------
 USE [Sample]
 GO
+-- DBForge 
+CREATE TABLE Sample.dbo.tblPerson
+(
+	ID INT NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+	Email NVARCHAR(50) NOT NULL,
+	GenderID INT NULL CONSTRAINT DF_tblPerson_GenderID DEFAULT (3),
+	Age INT NULL,
+	CONSTRAINT PK_tblPerson PRIMARY KEY CLUSTERED (ID),
+	CONSTRAINT CK_tblPerson_Age CHECK ([Age] > (0) AND [Age] < (150))
+) ON [PRIMARY]
+GO
+-- DBForge
+ALTER TABLE Sample.dbo.tblPerson
+ADD CONSTRAINT FK_tblPerson_GenderID FOREIGN KEY (GenderID) REFERENCES dbo.tblGender (ID) ON DELETE CASCADE
+GO
+
 
 CREATE TABLE tblGender
 (
@@ -227,14 +244,15 @@ FROM Test1
 SELECT *
 FROM Test2
 
-SELECT SCOPE_IDENTITY()
--- Same Session and SAME Scope - Used in Real World
-SELECT @@IDENTITY
--- Same Session across ANY Scope
-SELECT IDENT_CURRENT('Test2')
--- Specific Table across ANY Session and ANY Scop
+SELECT SCOPE_IDENTITY()       -- Same Session and SAME Scope - Used in Real World
+SELECT @@IDENTITY             -- Same Session across ANY Scope
+SELECT IDENT_CURRENT('Test2') -- Specific Table across ANY Session and ANY Scope
+GO
 
-CREATE TRIGGER trForInsert ON Test1 FOR INSERT
+CREATE TRIGGER trForInsert 
+ON Test1 
+FOR
+INSERT
 AS
 BEGIN
 	INSERT INTO Test2
@@ -249,5 +267,143 @@ VALUES ('ZZZ')
 INSERT INTO Test2
 VALUES
 	('ZZZ')
-
 --------------------------------------------------------------------------------
+
+/*
+Exact numerics 	
+Unicode character strings
+Approximate numerics 	
+Binary strings
+Date and time 	
+Character strings
+Other data types
+*/
+
+-- 1. EXACT NUMERICS
+----------------------------------------------
+-- BIT DATA TYPE
+DECLARE @varBit BIT
+SET     @varBit = 1
+SELECT  @varBit
+
+-- TINYINT DATA TYPE
+DECLARE @varTinyInt TINYINT
+SET     @varTinyInt = 256
+SELECT  @varTinyInt
+
+-- INT DATA TYPE
+DECLARE @varInt INT
+SET     @varInt = -256
+SELECT  @varInt
+
+-- BIGINT DATA TYPE
+DECLARE @varBigInt BIGINT
+SET     @varBigInt = 2544563643634453
+SELECT  @varBigInt
+
+-- DECIMAL DATA TYPE
+DECLARE @varDecimal DECIMAL(6, 2)
+SET     @varDecimal =  100.57
+SELECT  @varDecimal
+
+-- NUMERIC DATA TYPE
+DECLARE @varNumeric NUMERIC(9, 3)
+SET     @varNumeric =  12345.678
+SELECT  @varNumeric
+
+-- SMALLMONEY DATA TYPE
+DECLARE @varSmallMoney SMALLMONEY
+SET     @varSmallMoney = 214748.3647
+SELECT  @varSmallMoney
+
+-- MONEY DATA TYPE
+DECLARE @varMoney MONEY
+SET     @varMoney = 2000
+SELECT  @varMoney
+
+
+-- 2. APPROXIMATE NUMERICS
+-- -------------------------------------------------------------
+-- FLOAT DATA TYPE
+DECLARE @varDate DATE
+SET     @varDate = GETDATE()
+SELECT  @varDate
+
+-- 3. DATE & TIME (TEMPORAL) DATA TYPES
+-- -----------------------------------
+-- FLOAT DATA TYPE
+DECLARE @varFloat FLOAT
+SET     @varFloat = 100.23
+SELECT  @varFloat
+
+-- REAL DATA TYPE
+DECLARE @varReal REAL
+SET     @varReal = 100.293
+SELECT  @varReal
+
+-- DATETI DATA TYPE
+DECLARE @varDateTime DATETIME
+SET     @varDateTime = GETDATE()
+SELECT  @varDateTime
+
+-- DATETIME2 DATA TYPE
+DECLARE @varDateTime2 DATETIME2
+SET     @varDateTime2 = GETDATE()
+SELECT  @varDateTime2
+
+-- -----------------------------------
+-- 4.  CHARACTER STRINGS
+DECLARE @varChar CHAR(100)
+SET     @varChar = 'Salah ad-Din'
+SELECT  @varChar
+
+-- NCHAR DATA TYPE
+DECLARE @varNChar NCHAR(100)
+SET     @varNChar = 'Salah ad-Din'
+SELECT  @varNChar
+
+-- VARCHAR DATA TYPE
+DECLARE @varVarChar VARCHAR(MAX)
+SET     @varVarChar = 'Salah ad-Din'
+SELECT  @varVarChar
+
+-- NVARCHAR DATA TYPE
+DECLARE @varNVarChar NVARCHAR(100) -- NCARCHAR(MAX) - Store upto 2GB
+SET     @varNVarChar = N'Salah ad-Din'
+SELECT  @varNVarChar
+
+-- -----------------------------------------------------------------------------
+-- Part 9 - SELECT Statement
+
+SELECT DISTINCT City FROM tblPerson
+
+SELECT DISTINCT Name, City FROM tblPerson
+
+SELECT * FROM tblPerson WHERE Email LIKE '%@%'
+
+SELECT * FROM tblPerson WHERE Email NOT LIKE '%@%'
+
+-- Exactly 1 Character Before and After the @ Symbol
+SELECT * FROM tblPerson WHERE Email LIKE '_@_.com'
+
+SELECT * FROM tblPerson WHERE Name LIKE '[MST]%'
+
+SELECT * FROM tblPerson WHERE Name LIKE '[^MST]%'
+
+SELECT * FROM tblPerson WHERE Age IN (20, 23, 29)
+
+SELECT * FROM tblPerson WHERE Age BETWEEN 20 AND 25
+
+-- JOIN
+SELECT * FROM tblPerson WHERE (City = 'London' OR City = 'Thika') AND Age > 25
+
+SELECT * FROM tblPerson
+ORDER BY Name DESC, Age ASC -- Default is ASC
+
+SELECT TOP 3 Name, Age FROM tblPerson
+
+SELECT TOP 50 PERCENT * FROM tblPerson
+
+-- Select TOP (Highest Value) in a Column e.g Top Salary
+SELECT TOP 1 * FROM tblPerson
+ORDER BY Age DESC

@@ -9,18 +9,17 @@ Go
 -- DROP TABLE Loan
 CREATE TABLE Loan
 (
-    LoanID             INT IDENTITY(1, 1) PRIMARY KEY NOT NULL,
-    MemberID           INT NOT NULL, 			-- MemberID is a foreign key from 'Member' Table
+    LoanID             INT            NOT NULL IDENTITY(1, 1) PRIMARY KEY,
     OutstandingBalance DECIMAL(18, 2) NOT NULL,
     ArrearsAmount      DECIMAL(18, 2) NOT NULL,
-    DateDefaulted      DATE,
-    DaysInArrears      INT NOT NULL,
-    DisbursementDate   DATE,
+    DateDefaulted      DATETIME       NOT NULL,
+    DaysInArrears      INT            NOT NULL,
+    DisbursementDate   DATETIME       NOT NULL,
     RepaymentAmount    DECIMAL(18, 2) NOT NULL,
-    InterestRate       DECIMAL(3, 2) NOT NULL
-    MemberID           INT       FOREIGN KEY REFERENCES Member(MemberID), -- MemberID is a foreign key from 'Member' Table    
-	LoanTypeID         INT FOREIGN KEY REFERENCES LoanType(ID),
-	DefaulterID        INT FOREIGN KEY REFERENCES Defaulter(DefaulterID)	-- DefaulterID is a foreign key from 'Defaulter' Table (ID)
+    InterestRate       DECIMAL(3, 2)  NOT NULL,
+    MemberID           INT 			  NOT NULL FOREIGN KEY REFERENCES Member(MemberID), -- MemberID is a foreign key from 'Member' Table    
+	LoanTypeID         INT            NOT NULL FOREIGN KEY REFERENCES LoanType(LoanTypeID),
+	DefaulterID        INT            NOT NULL FOREIGN KEY REFERENCES Defaulter(DefaulterID)	-- DefaulterID is a foreign key from 'Defaulter' Table (ID)
 );
 EXEC sp_help Loan
 -- ----------------------------------------------------------------------------------------------- --
@@ -29,7 +28,7 @@ EXEC sp_help Loan
 -- DROP TABLE LoanType
 CREATE TABLE LoanType
 (
-	LoanTypeID   INT          NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	LoanTypeID   INT           NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	LoanTypeName NVARCHAR(100) NOT NULL
 
 );
@@ -79,12 +78,12 @@ CREATE TABLE Auctioneer
 	CertificateNo         NVARCHAR(50)  NOT NULL,
 	Building              NVARCHAR(50)  NOT NULL,
 	Street                NVARCHAR(50)  NOT NULL,
-	City                  NVARCHAR(50)  NOT NULL,
-	County                NVARCHAR(50)  NOT NULL,
+	CityOrTown            NVARCHAR(50)  NOT NULL,
+	CountyID              INT           NOT NULL FOREIGN KEY REFERENCES County(CountyID),
 	OfficialPhoneNo       NVARCHAR(20)  NOT NULL,
-	ContactPersonName     NVARCHAR(100),
+	ContactPersonName     NVARCHAR(100) NOT NULL,
 	ContactPersonMobileNo NVARCHAR(20)  NOT NULL,
-	EmailAddress          NVARCHAR(100)
+	EmailAddress          NVARCHAR(100) NOT NULL
 );
 EXEC sp_help Auctioneer 
 -- ----------------------------------------------------------------------------------------------- --
@@ -130,9 +129,9 @@ SELECT * FROM Users
 CREATE TABLE Guarantor
 (
 	GuarantorID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-	MemberId    INT NOT NULL, -- Foreign Key : Primary Key of Member Table
-	DefaulterID INT NOT NULL, -- Foreign Key : Primary Key of Defaulter Table
-	LoanID      INT NOT NULL  -- Foreign Key : Primary Key of Loan Table
+	MemberID    INT NOT NULL FOREIGN KEY REFERENCES Member(MemberID),       -- Foreign Key : Primary Key of Member Table
+	DefaulterID INT NOT NULL FOREIGN KEY REFERENCES Defaulter(DefaulterID), -- Foreign Key : Primary Key of Defaulter Table
+	LoanID      INT NOT NULL FOREIGN KEY REFERENCES Loan(LoanID)            -- Foreign Key : Primary Key of Loan Table
 );
 EXEC sp_help Guarantor
 -- ----------------------------------------------------------------------------------------------- --
@@ -148,9 +147,9 @@ CREATE TABLE [Case]
 	DateModified DATE NOT NULL,
 	CreatedBy    INT  NOT NULL,     -- Retrieve the UserId
 	ModifiedBy   DATE NOT NULL,
-	CaseStatusID INT  NOT NULL,  -- Foreign Key - Primary Key of CaseStatus Table
+	CaseStatusID INT  NOT NULL,   -- Foreign Key - Primary Key of CaseStatus Table
 	PortfolioID  INT  NOT NULL,   -- Foreign Key - Primary Key of Portfolio Table
-	UserID       INT  NOT NULL         -- Foreign Key - Primary Key of Users Table
+	UserID       INT  NOT NULL    -- Foreign Key - Primary Key of User Table
 );
 EXEC sp_help Cases
 -- ----------------------------------------------------------------------------------------------- --
@@ -160,9 +159,9 @@ EXEC sp_help Cases
 CREATE TABLE Defaulter
 (
 	DefaulterID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-	MemberID    INT NOT NULL,
-	GuarantorID INT, -- Nullable
-	LoanID      INT
+	MemberID    INT NOT NULL FOREIGN KEY REFERENCES Member(MemberID),
+	GuarantorID INT FOREIGN KEY REFERENCES Guarantor(GuarantorID),-- Nullable
+	LoanID      INT NOT NULL FOREIGN KEY REFERENCES Loan(LoanID),
 );
 EXEC sp_help Defaulter
 -- ----------------------------------------------------------------------------------------------- --
@@ -171,13 +170,13 @@ EXEC sp_help Defaulter
 -- DROP TABLE TeamLeader
 CREATE TABLE TeamLeader
 (
-	TeamLeaderID INT IDENTITY(1, 1) PRIMARY KEY NOT NULL,
+	TeamLeaderID INT          NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	FirstName    NVARCHAR(50) NOT NULL,
 	MiddleName   NVARCHAR(50),
 	LastName     NVARCHAR(50) NOT NULL,
-	EmployeeID   INT NOT NULL,          -- Foreign Key -  References EmployeeID from Employee Table
-	BranchID     INT NOT NULL,            -- Foreign Key -  References BranchID from Branch Table
-	DepartmentID INT NOT NULL         -- Foreign Key -  References DepartmentID from Deparment Table
+	EmployeeID   INT          NOT NULL,        -- Foreign Key -  References EmployeeID from Employee Table
+	BranchID     INT          NOT NULL,        -- Foreign Key -  References BranchID from Branch Table
+	DepartmentID INT          NOT NULL         -- Foreign Key -  References DepartmentID from Deparment Table
 );
 EXEC sp_help TeamLeader
 -- ----------------------------------------------------------------------------------------------- --
@@ -204,11 +203,26 @@ EXEC sp_help DebtCollectionOfficer
 
 CREATE TABLE Portfolio
 (
-	PortfolioID             INT IDENTITY(1, 1) PRIMARY KEY NOT NULL,
-	DebtCollectionOfficerID INT NOT NULL,
-	TeamLeaderID            INT NOT NULL
+	PortfolioID             INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	DebtCollectionOfficerID INT NOT NULL FOREIGN KEY REFERENCES DebtCollectionOfficer(DebtCollectionOfficerID),
+	TeamLeaderID            INT NOT NULL FOREIGN KEY REFERENCES TeamLeader(TeamLeaderID)
 );
 EXEC sp_help Portfolio
+
+CREATE TABLE Collateral
+(
+	CollateralID     INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	CollateralTypeID INT NOT NULL FOREIGN KEY REFERENCES CollateralType(CollateralTypeID),
+	CollateralName   NVARCHAR(100) NOT NULL,
+);
+EXEC sp_help Collateral
+
+CREATE TABLE CollateralType
+(
+	CollateralTypeID   INT           NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	CollateralTypeName NVARCHAR(100) NOT NULL,
+);
+EXEC sp_help CollateralType
 
 -- =============================================================================================== ==
 -- POPULATE TABLES --
