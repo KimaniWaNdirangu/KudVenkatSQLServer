@@ -407,3 +407,72 @@ SELECT TOP 50 PERCENT * FROM tblPerson
 -- Select TOP (Highest Value) in a Column e.g Top Salary
 SELECT TOP 1 * FROM tblPerson
 ORDER BY Age DESC
+
+-- -----------------------------------------------------------------------------
+-- Part 11 - GROUP BY
+
+SELECT *
+FROM tblEmployee
+
+SELECT SUM(Salary)
+FROM tblEmployee
+
+SELECT MIN(Salary)
+FROM tblEmployee
+
+SELECT MAX(Salary)
+FROM tblEmployee
+
+SELECT City, SUM(Salary) AS TotalSalary
+FROM tblEmployee
+/*
+Msg 8120, Level 16, State 1, Line 10
+Column 'tblEmployee.City' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
+*/
+
+SELECT City, SUM(Salary) AS TotalSalary
+FROM tblEmployee
+GROUP BY City
+
+-- GROUP BY City, Gender and TotalSalary
+SELECT City, Gender, SUM(Salary) AS TotalSalary
+FROM tblEmployee
+GROUP BY City, Gender
+ORDER BY City
+
+-- GROUP BY Gender, City and TotalSalary
+SELECT Gender, City, SUM(Salary) AS TotalSalary
+FROM tblEmployee
+GROUP BY Gender, City
+
+SELECT COUNT(*)
+FROM tblEmployee
+
+SELECT COUNT(ID)
+FROM tblEmployee
+
+SELECT Gender, City, SUM(Salary) AS [Total Salary], COUNT(ID) AS [Total Employees]
+FROM tblEmployee
+GROUP BY Gender, City
+
+SELECT Gender, City, SUM(Salary) AS [Total Salary], COUNT(ID) AS [Total Employees]
+FROM tblEmployee
+WHERE Gender = 'Male'
+GROUP BY Gender, City
+
+SELECT Gender, City, SUM(Salary) AS [Total Salary], COUNT(ID) AS [Total Employees]
+FROM tblEmployee
+GROUP BY Gender, City
+HAVING Gender = 'Male'
+
+SELECT *
+FROM tblEmployee
+WHERE SUM(Salary) > 4000
+/* Msg 147, Level 15, State 1, Line 51
+An aggregate may not appear in the WHERE clause unless it is in a subquery contained in a HAVING clause or a select list, and the column being aggregated is an outer reference.
+*/
+
+SELECT Gender, City, SUM(Salary) AS [Total Salary], COUNT(ID) AS [Total Employees]
+FROM tblEmployee
+GROUP BY Gender, City
+HAVING SUM(Salary) > 7000
