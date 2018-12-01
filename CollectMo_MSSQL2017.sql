@@ -90,11 +90,25 @@ EXEC sp_help Auctioneer
 -- DROP TABLE County
 CREATE TABLE County
 (
-	CountyID   INT          NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-	CountyName NVARCHAR(50),
-	Region     NVARCHAR(50) NOT NULL
+	CountyID   INT IDENTITY(1,1)    NOT NULL,
+	CountyCode INT                  NOT NULL,
+	CountyName NVARCHAR(64)         NOT NULL,
+	RegionID   TINYINT              NOT NULL,
+	CONSTRAINT PK_County_CountyID   PRIMARY KEY CLUSTERED (CountyID),
+	CONSTRAINT UC_County_CountyCode UNIQUE (CountyCode)
 );
+GO
+
 EXEC sp_help County
+
+-- ----------------------------------------------------------------------------------------------- --
+-- DROP TABLE Region
+CREATE TABLE Region
+(
+	RegionID   INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	RegionName NVARCHAR(64) NOT NULL,
+);
+EXEC sp_help Region
 -- ----------------------------------------------------------------------------------------------- --
 
 -- ----------------------------------------------------------------------------------------------- --
