@@ -527,3 +527,54 @@ JOINTYPE RightTable
 ON       JoinCondition    
 
 */
+
+-- -----------------------------------------------------------------------------
+---- Part 13 - Advanced or Intelligent JOIN
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+GO
+
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	LEFT JOIN tblDepartment
+	ON	      tblEmployee.DepartmentID = tblDepartment.Id
+WHERE         tblEmployee.DepartmentID IS NULL
+
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+GO
+
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	LEFT JOIN tblDepartment
+	ON	      tblEmployee.DepartmentID = tblDepartment.Id
+WHERE         tblDepartment.ID IS NULL
+
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+GO
+
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	RIGHT JOIN tblDepartment
+	ON	       tblEmployee.DepartmentID = tblDepartment.Id
+WHERE          tblEmployee.DepartmentID IS NULL
+
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+GO
+
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	FULL JOIN  tblDepartment
+	ON	       tblEmployee.DepartmentID = tblDepartment.Id
+WHERE          tblEmployee.DepartmentID IS NULL
+	OR         tblDepartment.ID IS NULL
