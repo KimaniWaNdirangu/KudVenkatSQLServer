@@ -409,7 +409,10 @@ SELECT TOP 1 * FROM tblPerson
 ORDER BY Age DESC
 
 -- -----------------------------------------------------------------------------
--- Part 11 - GROUP BY
+/* Part 11 - GROUP BY Clause
+	Aggregate Functions - COUNT, SUM, AVG, MIN, MAX
+
+*/
 
 SELECT *
 FROM tblEmployee
@@ -476,3 +479,51 @@ SELECT Gender, City, SUM(Salary) AS [Total Salary], COUNT(ID) AS [Total Employee
 FROM tblEmployee
 GROUP BY Gender, City
 HAVING SUM(Salary) > 7000
+
+-- -----------------------------------------------------------------------------
+-- Part 12 - JOIN Clause
+-- INNER JOIN - Returns only the matching rows.Non-matching rows are eliminated
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	INNER JOIN tblDepartment
+	ON         tblEmployee.DepartmentID = tblDepartment.ID
+
+SELECT *
+FROM tblEmployee
+SELECT *
+FROM tblDepartment
+-- LEFT OUTER JOIN - Returns all the matching rows + non matching rows fromt the LEFT Table
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	LEFT OUTER JOIN tblDepartment
+	ON              tblEmployee.DepartmentID = tblDepartment.ID
+
+-- RIGHT OUTER JOIN - Returns all the matching rows + non matching rows from the RIGHT Table
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	RIGHT OUTER JOIN tblDepartment
+	ON               tblEmployee.DepartmentID = tblDepartment.ID
+
+-- FULL OUTER JOIN - Returns all the matching rows from BOTH Tables
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+	FULL OUTER JOIN tblDepartment
+	ON              tblEmployee.DepartmentID = tblDepartment.ID
+
+-- CROSS JOIN - Returns the Cartesian Product of the 2 tables involved in the join
+SELECT Name, Gender, Salary, DepartmentName
+FROM tblEmployee
+CROSS JOIN tblDepartment
+
+/*
+SELECT   Column List [From Both Tables]
+FROM     LeftTable
+JOINTYPE RightTable
+ON       JoinCondition    
+
+*/
