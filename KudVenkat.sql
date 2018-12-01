@@ -15,11 +15,18 @@ sp_renameDB 'Sample3', 'Sample4'
 
 DROP DATABASE master -- Error Message - Cannot drop database 'master' because it is a system database.
 
+ALTER DATABASE [DatabaseName] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+
+DROP DATABASE [DatabaseName]
+GO
+
 -- Part 3 - Creating and Working With Tables
 --------------------------------------------------------------------------------
 USE [Sample]
 GO
 -- DBForge 
+
 CREATE TABLE Sample.dbo.tblPerson
 (
 	ID INT NOT NULL,
@@ -27,7 +34,7 @@ CREATE TABLE Sample.dbo.tblPerson
 	Email NVARCHAR(50) NOT NULL,
 	GenderID INT NULL CONSTRAINT DF_tblPerson_GenderID DEFAULT (3),
 	Age INT NULL,
-	CONSTRAINT PK_tblPerson PRIMARY KEY CLUSTERED (ID),
+	CONSTRAINT PK_tblPerson_ID PRIMARY KEY CLUSTERED (ID),
 	CONSTRAINT CK_tblPerson_Age CHECK ([Age] > (0) AND [Age] < (150))
 ) ON [PRIMARY]
 GO
