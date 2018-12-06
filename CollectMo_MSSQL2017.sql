@@ -98,7 +98,6 @@ CREATE TABLE County
 	CONSTRAINT UC_County_CountyCode UNIQUE (CountyCode)
 );
 GO
-
 EXEC sp_help County
 
 -- ----------------------------------------------------------------------------------------------- --
@@ -108,6 +107,7 @@ CREATE TABLE Region
 	RegionID   INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	RegionName NVARCHAR(64) NOT NULL,
 );
+GO
 EXEC sp_help Region
 -- ----------------------------------------------------------------------------------------------- --
 
@@ -155,11 +155,11 @@ EXEC sp_help Guarantor
 CREATE TABLE [Case]
 (
 	CaseID       INT  NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	LoanID       INT  NOT NULL,        -- Foreign Key - Primary Key of Loan Table
-	MemberID     INT  NOT NULL,      -- Foreign Key - Primary Key of Member Table
+	LoanID       INT  NOT NULL,   -- Foreign Key - Primary Key of Loan Table
+	MemberID     INT  NOT NULL,   -- Foreign Key - Primary Key of Member Table
 	DateCreated  DATE NOT NULL,
 	DateModified DATE NOT NULL,
-	CreatedBy    INT  NOT NULL,     -- Retrieve the UserId
+	CreatedBy    INT  NOT NULL,   -- Retrieve the UserId
 	ModifiedBy   DATE NOT NULL,
 	CaseStatusID INT  NOT NULL,   -- Foreign Key - Primary Key of CaseStatus Table
 	PortfolioID  INT  NOT NULL,   -- Foreign Key - Primary Key of Portfolio Table
