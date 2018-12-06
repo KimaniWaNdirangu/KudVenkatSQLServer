@@ -528,10 +528,10 @@ FROM tblEmployee
 CROSS JOIN tblDepartment
 
 /*
-SELECT   Column List [From Both Tables]
-FROM     LeftTable
-JOINTYPE RightTable
-ON       JoinCondition    
+SELECT    Column List [Columns From Both Tables]
+FROM      LeftTable
+JOIN_TYPE RightTable
+ON        JoinCondition    
 
 */
 
@@ -585,3 +585,37 @@ FROM tblEmployee
 	ON	       tblEmployee.DepartmentID = tblDepartment.Id
 WHERE          tblEmployee.DepartmentID IS NULL
 	OR         tblDepartment.ID IS NULL
+
+-- -----------------------------------------------------------------------------
+-- Part 13 - Advanced Or Intelligent JOINS
+
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
+
+SELECT    Name, Gender, Salary, DepartmentName
+FROM      tblEmployee
+LEFT JOIN tblDepartment
+ON        tblEmployee.DepartmentID = tblDepartment.ID
+WHERE	  tblEmployee.DepartmentID IS NULL
+
+SELECT    Name, Gender, Salary, DepartmentName
+FROM      tblEmployee
+LEFT JOIN tblDepartment
+ON        tblEmployee.DepartmentID = tblDepartment.ID
+WHERE	  tblDepartment.ID IS NULL
+
+SELECT     Name, Gender, Salary, DepartmentName
+FROM       tblEmployee
+RIGHT JOIN tblDepartment
+ON         tblEmployee.DepartmentID = tblDepartment.ID
+WHERE	   tblEmployee.DepartmentID IS NULL
+
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
+
+SELECT    Name, Gender, Salary, DepartmentID, DepartmentName
+FROM      tblEmployee
+FULL JOIN tblDepartment
+ON        tblEmployee.DepartmentID = tblDepartment.ID
+WHERE	  tblEmployee.DepartmentID IS NULL
+OR        tblDepartment.ID IS NULL
