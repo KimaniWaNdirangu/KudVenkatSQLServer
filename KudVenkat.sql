@@ -657,30 +657,40 @@ CROSS JOIN	Employee M
 -- ISNULL(), CASE and COALESCE()
 
 SELECT ISNULL(NULL, 'No Manager') AS Manager
-SELECT ISNULL('PRAGIM', 'No Manager') AS Manager
--- Returns PRAGIM
+SELECT ISNULL('PRAGIM', 'No Manager') AS Manager -- Returns PRAGIM
 
-SELECT E.Name AS Employee, ISNULL(M.Name,'No Manager') AS Manager
-FROM Employee E
-	LEFT JOIN Employee M
-	ON			E.ManagerID = M.EmployeeID
+SELECT    E.Name AS Employee, ISNULL(M.Name,'No Manager') AS Manager
+FROM      Employee E
+LEFT JOIN Employee M
+ON		  E.ManagerID = M.EmployeeID
 
-SELECT COALESCE(NULL, 'No Manager') AS Manager
--- Returns 'No Manager'
-SELECT COALESCE('PRAGIM', 'No Manager') AS Manager
--- Returns PRAGIM
+SELECT COALESCE(NULL, 'No Manager') AS Manager -- Returns 'No Manager'
+SELECT COALESCE('PRAGIM', 'No Manager') AS Manager -- Returns PRAGIM
 
 
-SELECT E.Name AS Employee, COALESCE(M.Name,'No Manager') AS Manager
-FROM Employee E
-	LEFT JOIN Employee M
-	ON			E.ManagerID = M.EmployeeID
+SELECT    E.Name AS Employee, COALESCE(M.Name,'No Manager') AS Manager
+FROM      Employee E
+LEFT JOIN Employee M
+ON		  E.ManagerID = M.EmployeeID
 
 -- CASE Statement
 -- CASE WHEN (Expression is True) THEN '' ELSE '' 
 
-SELECT E.Name AS Employee, CASE WHEN M.Name IS NULL THEN 'No Manager'ELSE M.Name END AS Manager
-FROM Employee E
-	LEFT JOIN Employee M
-	ON			E.ManagerID = M.EmployeeID
+SELECT    E.Name AS Employee, CASE WHEN M.Name IS NULL THEN 'No Manager'ELSE M.Name END AS Manager
+FROM      Employee E
+LEFT JOIN Employee M
+ON		  E.ManagerID = M.EmployeeID
 
+-- -----------------------------------------------------------------------------
+-- Part 16 - COALESCE() Function - Returns the FIRST NON-NULL Value
+-- -----------------------------------------------------------------------------
+
+SELECT *
+FROM tblEmployee
+
+SELECT ID, COALESCE(FirstName, MiddleName, LastName) AS [Name]
+FROM tblEmployee
+
+-- -----------------------------------------------------------------------------
+-- 
+-- -----------------------------------------------------------------------------
