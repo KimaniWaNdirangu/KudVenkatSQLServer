@@ -769,6 +769,94 @@ SELECT * FROM tblUKCustomers
 UNION ALL
 SELECT * FROM tblUSCustomers
 ORDER BY [Name]
-
+GO
 
 --  UNION combines ROWS from 2 or more tables, whereas JOINS combine COLUMNS from 2 or more tables.
+
+-- -----------------------------------------------------------------------------
+-- Part 18 - Stored Procedures
+-- -----------------------------------------------------------------------------
+
+-- Part 18 - Stored Procedures
+CREATE PROCEDURE spGetEmployees
+-- Alternative Syntax CREATE PROC
+AS
+BEGIN
+	SELECT [Name], Gender
+	FROM tblEmployee
+	ORDER BY [Name]
+END
+GO
+
+EXEC spGetEmployees
+EXECUTE spGetEmployees
+GO
+
+CREATE PROCEDURE spGetEmployeesByGenderAndDepartment
+	@Gender       NVARCHAR(20),
+	@DepartmentID INT
+AS
+BEGIN
+	SELECT [Name], Gender, @DepartmentID
+	FROM   tblEmployee
+	WHERE  Gender = @Gender AND DepartmentID = @DepartmentID
+END
+GO
+
+SELECT * FROM tblEmployee
+GO
+
+spGetEmployeesByGenderAndDepartment 'Male', 2
+GO
+
+-- Will Generate an error since SP parameters order is important
+spGetEmployeesByGenderAndDepartment 1, 'Male'
+GO
+
+-- ! Msg 8114, Level 16, State 1, Procedure spGetEmployeesByGenderAndDepartment, Line 0 [Batch Start Line 27]
+-- ! Error converting data type varchar to int.
+
+-- Output Succesfull
+spGetEmployeesByGenderAndDepartment @DepartmentID = 1, @Gender = 'Male'
+GO
+
+sp_helptext spGetEmployees
+GO
+/*
+CREATE PROCEDURE spGetEmployees  
+AS  
+BEGIN  
+ SELECT [Name], Gender  
+ FROM tblEmployee  
+END
+*/
+
+-- Altering a Stored Procedure
+-- ---------------------------
+ALTER PROCEDURE spGetEmployees
+BEGIN
+	SELECT [Name], Gender
+	FROM tblEmployee
+	ORDER BY [Name]
+END
+GO
+-- Dropping a Stored Procedure
+-- ---------------------------
+DROP PROCEDURE spGetEmployees
+GO
+-- Encrypting Stored Procedure Text
+ALTER PROCEDURE spGetEmployeesByGenderAndDepartment
+	@Gender       NVARCHAR(20),
+	@DepartmentID INT
+WITH ENCRYPTION
+AS
+BEGIN
+	SELECT [Name], Gender, @DepartmentID
+	FROM   tblEmployee
+	WHERE  Gender = @Gender AND DepartmentID = @DepartmentID
+END
+GO
+-- ! Output Error - The text for object 'spGetEmployeesByGenderAndDepartment' is encrypted.
+
+sp_helptext spGetEmployeesByGenderAndDepartment
+
