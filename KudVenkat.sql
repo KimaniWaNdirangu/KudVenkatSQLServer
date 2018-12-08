@@ -619,3 +619,33 @@ FULL JOIN tblDepartment
 ON        tblEmployee.DepartmentID = tblDepartment.ID
 WHERE	  tblEmployee.DepartmentID IS NULL
 OR        tblDepartment.ID IS NULL
+
+-- -----------------------------------------------------------------------------
+-- Part 13 - SELF JOIN
+-- -----------------------------------------------------------------------------
+
+SELECT * FROM Employee-- 
+
+-- LEFT OUTER SELF JOIN
+SELECT    E.Name AS Employee, M.Name AS Manager
+FROM      Employee E
+LEFT JOIN Employee M
+ON	      E.ManagerID = M.EmployeeID
+
+-- INNER SELF JOIN
+SELECT     E.Name AS Employee, M.Name AS Manager
+FROM       Employee E
+INNER JOIN Employee M
+ON		   E.ManagerID = M.EmployeeID
+
+-- RIGHT OUTER SELF JOIN -- TODO
+SELECT     E.Name AS Employee, M.Name AS Manager
+FROM       Employee E
+RIGHT JOIN Employee M
+ON		   E.ManagerID = M.EmployeeID
+
+-- CROSS SELF JOIN 
+SELECT      E.Name AS Employee, M.Name AS Manager
+FROM        Employee E
+CROSS JOIN	Employee M
+
