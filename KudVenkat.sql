@@ -495,36 +495,34 @@ FROM tblEmployee
 SELECT *
 FROM tblDepartment
 
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	INNER JOIN tblDepartment
-	ON         tblEmployee.DepartmentID = tblDepartment.ID
+SELECT     Name, Gender, Salary, DepartmentName
+FROM       tblEmployee
+INNER JOIN tblDepartment
+ON         tblEmployee.DepartmentID = tblDepartment.ID
 
-SELECT *
-FROM tblEmployee
-SELECT *
-FROM tblDepartment
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
 -- LEFT OUTER JOIN - Returns all the matching rows + non matching rows fromt the LEFT Table
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	LEFT OUTER JOIN tblDepartment
-	ON              tblEmployee.DepartmentID = tblDepartment.ID
+SELECT          Name, Gender, Salary, DepartmentName
+FROM            tblEmployee
+LEFT OUTER JOIN tblDepartment
+ON              tblEmployee.DepartmentID = tblDepartment.ID
 
 -- RIGHT OUTER JOIN - Returns all the matching rows + non matching rows from the RIGHT Table
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	RIGHT OUTER JOIN tblDepartment
-	ON               tblEmployee.DepartmentID = tblDepartment.ID
+SELECT           Name, Gender, Salary, DepartmentName
+FROM             tblEmployee
+RIGHT OUTER JOIN tblDepartment
+ON               tblEmployee.DepartmentID = tblDepartment.ID
 
 -- FULL OUTER JOIN - Returns all the matching rows from BOTH Tables
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	FULL OUTER JOIN tblDepartment
-	ON              tblEmployee.DepartmentID = tblDepartment.ID
+SELECT          Name, Gender, Salary, DepartmentName
+FROM            tblEmployee
+FULL OUTER JOIN tblDepartment
+ON              tblEmployee.DepartmentID = tblDepartment.ID
 
 -- CROSS JOIN - Returns the Cartesian Product of the 2 tables involved in the join
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
+SELECT     Name, Gender, Salary, DepartmentName
+FROM       tblEmployee
 CROSS JOIN tblDepartment
 
 /*
@@ -538,54 +536,46 @@ ON        JoinCondition
 -- -----------------------------------------------------------------------------
 ---- Part 13 - Advanced or Intelligent JOIN
 -- -----------------------------------------------------------------------------
-SELECT *
-FROM tblEmployee
-SELECT *
-FROM tblDepartment
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
 GO
 
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	LEFT JOIN tblDepartment
-	ON	      tblEmployee.DepartmentID = tblDepartment.Id
-WHERE         tblEmployee.DepartmentID IS NULL
+SELECT    Name, Gender, Salary, DepartmentName
+FROM      tblEmployee
+LEFT JOIN tblDepartment
+ON	      tblEmployee.DepartmentID = tblDepartment.Id
+WHERE     tblEmployee.DepartmentID IS NULL
 
-SELECT *
-FROM tblEmployee
-SELECT *
-FROM tblDepartment
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
 GO
 
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	LEFT JOIN tblDepartment
-	ON	      tblEmployee.DepartmentID = tblDepartment.Id
-WHERE         tblDepartment.ID IS NULL
+SELECT    Name, Gender, Salary, DepartmentName
+FROM      tblEmployee
+LEFT JOIN tblDepartment
+ON	      tblEmployee.DepartmentID = tblDepartment.Id
+WHERE     tblDepartment.ID IS NULL
 
-SELECT *
-FROM tblEmployee
-SELECT *
-FROM tblDepartment
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
 GO
 
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	RIGHT JOIN tblDepartment
-	ON	       tblEmployee.DepartmentID = tblDepartment.Id
-WHERE          tblEmployee.DepartmentID IS NULL
+SELECT     Name, Gender, Salary, DepartmentName
+FROM       tblEmployee
+RIGHT JOIN tblDepartment
+ON	       tblEmployee.DepartmentID = tblDepartment.Id
+WHERE      tblEmployee.DepartmentID IS NULL
 
-SELECT *
-FROM tblEmployee
-SELECT *
-FROM tblDepartment
+SELECT * FROM tblEmployee
+SELECT * FROM tblDepartment
 GO
 
-SELECT Name, Gender, Salary, DepartmentName
-FROM tblEmployee
-	FULL JOIN  tblDepartment
-	ON	       tblEmployee.DepartmentID = tblDepartment.Id
-WHERE          tblEmployee.DepartmentID IS NULL
-	OR         tblDepartment.ID IS NULL
+SELECT     Name, Gender, Salary, DepartmentName
+FROM       tblEmployee
+FULL JOIN  tblDepartment
+ON	       tblEmployee.DepartmentID = tblDepartment.Id
+WHERE      tblEmployee.DepartmentID IS NULL
+OR         tblDepartment.ID IS NULL
 
 -- -----------------------------------------------------------------------------
 -- Part 13 - Advanced Or Intelligent JOINS
