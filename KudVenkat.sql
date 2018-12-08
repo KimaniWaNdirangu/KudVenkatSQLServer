@@ -537,6 +537,7 @@ ON        JoinCondition
 
 -- -----------------------------------------------------------------------------
 ---- Part 13 - Advanced or Intelligent JOIN
+-- -----------------------------------------------------------------------------
 SELECT *
 FROM tblEmployee
 SELECT *
@@ -621,7 +622,7 @@ WHERE	  tblEmployee.DepartmentID IS NULL
 OR        tblDepartment.ID IS NULL
 
 -- -----------------------------------------------------------------------------
--- Part 13 - SELF JOIN
+-- Part 14 - SELF JOIN
 -- -----------------------------------------------------------------------------
 
 SELECT * FROM Employee-- 
@@ -648,4 +649,38 @@ ON		   E.ManagerID = M.EmployeeID
 SELECT      E.Name AS Employee, M.Name AS Manager
 FROM        Employee E
 CROSS JOIN	Employee M
+
+-- -----------------------------------------------------------------------------
+-- Part 15 - Different Ways To Replace NULL
+-- -----------------------------------------------------------------------------
+
+-- ISNULL(), CASE and COALESCE()
+
+SELECT ISNULL(NULL, 'No Manager') AS Manager
+SELECT ISNULL('PRAGIM', 'No Manager') AS Manager
+-- Returns PRAGIM
+
+SELECT E.Name AS Employee, ISNULL(M.Name,'No Manager') AS Manager
+FROM Employee E
+	LEFT JOIN Employee M
+	ON			E.ManagerID = M.EmployeeID
+
+SELECT COALESCE(NULL, 'No Manager') AS Manager
+-- Returns 'No Manager'
+SELECT COALESCE('PRAGIM', 'No Manager') AS Manager
+-- Returns PRAGIM
+
+
+SELECT E.Name AS Employee, COALESCE(M.Name,'No Manager') AS Manager
+FROM Employee E
+	LEFT JOIN Employee M
+	ON			E.ManagerID = M.EmployeeID
+
+-- CASE Statement
+-- CASE WHEN (Expression is True) THEN '' ELSE '' 
+
+SELECT E.Name AS Employee, CASE WHEN M.Name IS NULL THEN 'No Manager'ELSE M.Name END AS Manager
+FROM Employee E
+	LEFT JOIN Employee M
+	ON			E.ManagerID = M.EmployeeID
 
