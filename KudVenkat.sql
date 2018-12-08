@@ -579,6 +579,7 @@ OR         tblDepartment.ID IS NULL
 
 -- -----------------------------------------------------------------------------
 -- Part 13 - Advanced Or Intelligent JOINS
+-- -----------------------------------------------------------------------------
 
 SELECT * FROM tblEmployee
 SELECT * FROM tblDepartment
@@ -682,5 +683,92 @@ SELECT ID, COALESCE(FirstName, MiddleName, LastName) AS [Name]
 FROM tblEmployee
 
 -- -----------------------------------------------------------------------------
--- 
+-- Part 17 - UNION and UNION ALL
 -- -----------------------------------------------------------------------------
+
+CREATE TABLE Sample.dbo.tblIndiaCustomers
+(
+	Id int NOT NULL,
+	Name nvarchar(50) NOT NULL,
+	Email nvarchar(50) NOT NULL,
+	CONSTRAINT PK_tblIndiaCustomers PRIMARY KEY CLUSTERED (Id)
+)
+ON [PRIMARY]
+GO
+
+CREATE TABLE Sample.dbo.tblUKCustomers
+(
+	Id int NOT NULL,
+	Name nvarchar(50) NOT NULL,
+	Email nvarchar(50) NOT NULL,
+	CONSTRAINT PK_tblUKCustomers PRIMARY KEY CLUSTERED (Id)
+)
+ON [PRIMARY]
+GO
+
+CREATE TABLE Sample.dbo.tblUSCustomers
+(
+	Id int NOT NULL,
+	Name nvarchar(50) NOT NULL,
+	Email nvarchar(50) NOT NULL,
+	CONSTRAINT PK_tblUSCustomers PRIMARY KEY CLUSTERED (Id)
+)
+ON [PRIMARY]
+GO
+-- --------------------------------
+INSERT INTO tblIndiaCustomers
+VALUES (1, 'Raj', 'R@R.com')
+
+INSERT INTO tblIndiaCustomers
+VALUES (2, 'Sam', 'S@S.com')
+
+INSERT INTO tblUKCustomers
+VALUES	(1, 'Ben', 'B@B.com')
+
+INSERT INTO tblUKCustomers
+VALUES (1, 'Sam', 'S@S.com')
+
+INSERT INTO tblUSCustomers
+VALUES (1, 'John', 'J@J.com')
+
+INSERT INTO tblUSCustomers
+VALUES (2, 'Todd', 'T@T.com')
+
+
+SELECT * FROM tblUSCustomers
+
+-- UNION ALL returns all rows
+SELECT * FROM tblIndiaCustomers
+UNION ALL
+SELECT * FROM tblUKCustomers
+
+-- UNION removes duplicate rows
+-- UNION performs a DISTINCT SORT
+SELECT * FROM tblIndiaCustomers
+UNION
+SELECT * FROM tblUKCustomers
+
+-- ! All Columns Name, Number, Data Types and Order MUST Match from both tables
+SELECT Id, [Name] FROM tblIndiaCustomers
+UNION ALL
+SELECT Id, [Name], Email FROM tblUKCustomers
+
+-- Error Message
+-- ! Msg 205, Level 16, State 1, Line 14
+-- ! All queries combined using a UNION, INTERSECT or EXCEPT operator must have an equal number of expressions in their target lists.
+
+-- Performs Implicit Conversion
+SELECT Id, Email, [Name] FROM tblIndiaCustomers
+UNION ALL
+SELECT Id, [Name], Email FROM tblUKCustomers
+
+
+SELECT * FROM tblIndiaCustomers
+UNION ALL
+SELECT * FROM tblUKCustomers
+UNION ALL
+SELECT * FROM tblUSCustomers
+ORDER BY [Name]
+
+
+--  UNION combines ROWS from 2 or more tables, whereas JOINS combine COLUMNS from 2 or more tables.
